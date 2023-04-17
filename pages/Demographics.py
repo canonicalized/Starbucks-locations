@@ -9,9 +9,9 @@ from st_pages import Page, show_pages
 # Specify what pages should be shown in the sidebar, and what their titles and icons should be
 show_pages(
     [
-        Page("locations.py", "Locations", "📍"),
-        Page("pages/demographics.py", "Demographics", "📊"),
-        Page("pages/locate_nearby.py", "Locate Nearby", "🌍"),
+        Page("Locations.py", "Locations", "📍"),
+        Page("pages/Demographics.py", "Demographics", "📊"),
+        Page("pages/Locate Nearby.py", "Locate Nearby", "🌍"),
     ]
 )
 
