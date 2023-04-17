@@ -1,5 +1,5 @@
-openrouteservice=2.3.3
-geopy=2.3.0
-geographiclib=2.0
+openrouteservice==2.3.3
+geopy==2.3.0
+geographiclib==2.0
 st-pages
 -r https://raw.githubusercontent.com/snowflakedb/snowflake-connector-python/v2.7.9/tested_requirements/requirements_39.reqs
