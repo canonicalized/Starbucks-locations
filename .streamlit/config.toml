@@ -2,3 +2,6 @@
 base="dark"
 primaryColor="#036635"
 font="serif"
+
+[mapbox]
+token = "pk.eyJ1IjoiZG9yaWFuYiIsImEiOiJjamozNjZ2N2gwbzQxM3BtcTdpbmQwdmliIn0.kmYlb0i-CX02bIoLUMOf0w"

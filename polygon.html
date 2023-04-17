@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>pydeck</title>
+        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <script src='https://cdn.jsdelivr.net/npm/@deck.gl/jupyter-widget@~8.8.*/dist/index.js'></script>
+    <style>
+    body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#deck-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+#deck-container canvas {
+  z-index: 1;
+  background: #304ffe;
+}
+    </style>
+  </head>
+  <body>
+    <div id="deck-container">
+    </div>
+  </body>
+  <script>
+    const container = document.getElementById('deck-container');
+    const jsonInput = {
+  "initialViewState": {
+    "latitude": 40.731828638877616,
+    "longitude": -73.99755192542565,
+    "zoom": 14
+  },
+  "layers": [
+    {
+      "@@type": "PolygonLayer",
+      "autoHighlight": true,
+      "data": {
+        "geometry": {
+          "coordinates": [
+            [
+              [
+                -74.001725,
+                40.733811
+              ],
+              [
+                -74.00149,
+                40.732675
+              ],
+              [
+                -74.001261,
+                40.731585
+              ],
+              [
+                -74.00094,
+                40.730632
+              ],
+              [
+                -74.000671,
+                40.72984
+              ],
+              [
+                -74.00065,
+                40.72983
+              ],
+              [
+                -73.998922,
+                40.72895
+              ],
+              [
+                -73.997165,
+                40.728663
+              ],
+              [
+                -73.995589,
+                40.72887
+              ],
+              [
+                -73.993573,
+                40.729611
+              ],
+              [
+                -73.99341,
+                40.729933
+              ],
+              [
+                -73.993699,
+                40.73134
+              ],
+              [
+                -73.993718,
+                40.731413
+              ],
+              [
+                -73.994022,
+                40.732328
+              ],
+              [
+                -73.994741,
+                40.734189
+              ],
+              [
+                -73.995034,
+                40.734398
+              ],
+              [
+                -73.995127,
+                40.73442
+              ],
+              [
+                -73.999709,
+                40.734593
+              ],
+              [
+                -74.001359,
+                40.734068
+              ],
+              [
+                -74.001717,
+                40.73386
+              ],
+              [
+                -74.001725,
+                40.733811
+              ]
+            ]
+          ],
+          "type": "Polygon"
+        },
+        "properties": {
+          "center": [
+            -73.99755192542565,
+            40.731828638877616
+          ],
+          "group_index": 0,
+          "value": 300
+        },
+        "type": "Feature"
+      },
+      "getFillColor": "@@=[255, 0, 0, 100]",
+      "getPolygon": "@@=geometry.coordinates",
+      "id": "9e38f004-223d-4947-9069-4c87df23627c",
+      "pickable": true
+    }
+  ],
+  "mapProvider": "carto",
+  "mapStyle": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+  "views": [
+    {
+      "@@type": "MapView",
+      "controller": true
+    }
+  ]
+};
+    const tooltip = true;
+    const customLibraries = null;
+    const configuration = null;
+
+    const deckInstance = createDeck({
+            mapboxApiKey: 'pk.eyJ1IjoiZG9yaWFuYiIsImEiOiJjamozNjZ2N2gwbzQxM3BtcTdpbmQwdmliIn0.kmYlb0i-CX02bIoLUMOf0w',
+                  container,
+      jsonInput,
+      tooltip,
+      customLibraries,
+      configuration
+    });
+
+  </script>
+</html>
