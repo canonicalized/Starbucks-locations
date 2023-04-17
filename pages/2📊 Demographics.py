@@ -78,7 +78,7 @@ pot = pot.reset_index()
 pot["Breakdown Order"] = pot["Breakdown"].str.extract("(\d+)").astype(int)
 pot["Breakdown Order"] = pot["Breakdown"].apply(lambda x: 0 if x == "Less than $10 000" else int(x.replace("$", "").replace(",", "").split(" ")[0]))
 pot = pot.sort_values(by="Breakdown Order")
-pot["Population"] = pot["Population"].astype(str)
+pot["Population"] = pot["Population"].astype(str) 
 
 fig = go.Figure()
 

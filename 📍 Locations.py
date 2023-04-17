@@ -96,13 +96,11 @@ def smap_city(df):
                 get_radius=200,
                 pickable=True,
                 auto_highlight=True,
-
-
-        filled=True,
-        radius_scale=2.5,
-        radius_min_pixels=1,
-        radius_max_pixels=10,
-        line_width_min_pixels=1,
+                filled=True,
+                radius_scale=2.5,
+                radius_min_pixels=1,
+                radius_max_pixels=10,
+                line_width_min_pixels=1, 
             )
         ],
         tooltip = {

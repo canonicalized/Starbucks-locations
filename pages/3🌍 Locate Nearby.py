@@ -29,7 +29,7 @@ conn = init_connection()
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
 @st.cache_data(ttl=600)
 def run_query(query):
-    return pd.read_sql(query, conn)
+    return pd.read_sql(query, conn) 
 
 df = run_query("SELECT PLACEKEY, PARENT_PLACEKEY, LATITUDE, LONGITUDE, STREET_ADDRESS, CITY, REGION, POSTAL_CODE from CORE_POI;")
 df["CITY_STATE"] = df["CITY"] + ", " + df['REGION']
