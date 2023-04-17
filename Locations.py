@@ -16,7 +16,7 @@ show_pages(
     [
         Page("Locations.py", "Locations", "📍"),
         Page("pages/Demographics.py", "Demographics", "📊"),
-        Page("pages/Locate Nearby.py", "Locate Nearby", "🌍"),
+        Page("pages/Locate Nearby.py", "Locate Nearby", "🌍")
     ]
 )
 
