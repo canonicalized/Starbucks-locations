@@ -18,3 +18,4 @@ snowflake-connector-python==2.7.9
 geopy
 pydeck
 openrouteservice
+shapely
