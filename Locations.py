@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 import snowflake.connector
-
+from functions import format_open_hours
 #charting
 import pydeck as pdk
 import plotly.express as px
@@ -41,8 +41,9 @@ conn = init_connection()
 def run_query(query):
     return pd.read_sql(query, conn)
 
-df = run_query("SELECT PLACEKEY, PARENT_PLACEKEY, LATITUDE, LONGITUDE, STREET_ADDRESS, CITY, REGION, POSTAL_CODE from CORE_POI;")
+df = run_query("SELECT PLACEKEY, LATITUDE, LONGITUDE, STREET_ADDRESS, CITY, REGION, POSTAL_CODE, OPEN_HOURS from CORE_POI;")
 df["CITY_STATE"] = df["CITY"] + ", " + df['REGION']
+df['OPEN_HOURS'] = df['OPEN_HOURS'].apply(format_open_hours)
 
 st.title('Starbucks Locations Across The US')
 
@@ -74,15 +75,15 @@ def smap(df):
                 auto_highlight=True,
 
 
-        filled=True,
-        radius_scale=6,
-        radius_min_pixels=1,
-        radius_max_pixels=10,
-        line_width_min_pixels=1,
+            filled=True,
+            radius_scale=6,
+            radius_min_pixels=1,
+            radius_max_pixels=10,
+            line_width_min_pixels=1,
             )
         ],
         tooltip = {
-            "text": "Address: {STREET_ADDRESS}"
+            "text": "Address: {STREET_ADDRESS}\n {OPEN_HOURS}"
         }
     ))
 
@@ -115,7 +116,7 @@ def smap_city(df):
             )
         ],
         tooltip = {
-            "text": "Address: {STREET_ADDRESS}"
+            "text": "Address: {STREET_ADDRESS}\n {OPEN_HOURS}"
         }
     ))
 

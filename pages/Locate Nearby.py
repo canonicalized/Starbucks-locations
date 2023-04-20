@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pydeck as pdk
+from functions import format_open_hours
 # import osmnx as ox
 from shapely.geometry import Point, Polygon
 import openrouteservice as ors
@@ -39,10 +40,11 @@ conn = init_connection()
 def run_query(query):
     return pd.read_sql(query, conn) 
 
-df = run_query("SELECT PLACEKEY, PARENT_PLACEKEY, LATITUDE, LONGITUDE, STREET_ADDRESS, CITY, REGION, POSTAL_CODE from CORE_POI;")
-df["CITY_STATE"] = df["CITY"] + ", " + df['REGION']
+df = run_query("SELECT PLACEKEY, LATITUDE, LONGITUDE, STREET_ADDRESS, OPEN_HOURS from CORE_POI;")
+# df['CITY_STATE'] = df['CITY'] + ", " + df['REGION']
+df['OPEN_HOURS'] = df['OPEN_HOURS'].apply(format_open_hours)
 
-with st.expander("Input your address and we'll find the closest coffee shop(s) to your location", expanded=True):
+with st.expander("Input your address and we'll find the closest coffee shops to your location", expanded=True):
     with st.container():
         col1, col2, col3 = st.columns(3)
 
@@ -76,7 +78,7 @@ def mode_transit(transit_selected):
 # st_folium(map, width=700, height=450)
 if fas:
     if len(address)<5:
-        st.warning("Please input a valid address")    
+        st.warning("Please input a valid address")
     else:
         with st.spinner('Generating map...'):
             # Calculate user location coordinates using geopy
@@ -91,7 +93,7 @@ if fas:
 
             # Define function to generate isochrone
             def generate_isochrone(location, time, mode=transit_selected):
-                try: 
+                try:
                     # Set up OpenRouteService client with API key
                     client = ors.Client(key=st.secrets.ors_creds.api_key)
 
@@ -106,7 +108,7 @@ if fas:
 
                     # Send request to OpenRouteService API
                     result = client.isochrones(**query)
-                    
+
                     # st.write(result)
 
                     # Extract isochrone geometry
@@ -120,15 +122,18 @@ if fas:
             # Generate isochrone
             isochrone = generate_isochrone(user_coords, time_selected * 60, mode="walking")
 
-        
+            # Convert the Polygon to a list of lists
+            coordinates = list(isochrone[0].exterior.coords)
+            polypd = [[[c[0], c[1]] for c in coordinates]]
+
             sb_locations = pd.DataFrame()
             # Define layer for Starbucks locations within isochrone
             for _, row in df.iterrows():
                 sb_coords = (row["LONGITUDE"], row["LATITUDE"])
                 sb_point = Point(sb_coords)
                 if any(sb_point.within(polygon) for polygon in isochrone):
-                    sb_locations = sb_locations.append({"LONGITUDE": row["LONGITUDE"], "LATITUDE": row["LATITUDE"], "STREET_ADDRESS":row["STREET_ADDRESS"]}, ignore_index=True)
-            
+                    sb_locations = sb_locations.append({"LONGITUDE": row["LONGITUDE"], "LATITUDE": row["LATITUDE"], "STREET_ADDRESS":row["STREET_ADDRESS"], "OPEN_HOURS":row["OPEN_HOURS"]}, ignore_index=True)
+
             st.pydeck_chart(pdk.Deck(
                 map_style=None,
                 initial_view_state=pdk.ViewState(
@@ -139,6 +144,16 @@ if fas:
                     bearing=0
                 ),
                 layers=[
+                    pdk.Layer(
+                        "PolygonLayer",
+                        polypd,
+                        stroked=True,
+                        # processes the data as a flat longitude-latitude pair
+                        get_polygon="-",
+                        get_fill_color=[3, 102, 53, 50],
+                        get_line_color=[3, 102, 53, 160],
+                        get_line_width=15
+                    ),
                     pdk.Layer(
                         'ScatterplotLayer',
                         data=sb_locations,
@@ -153,28 +168,18 @@ if fas:
                         radius_max_pixels=8,
                         line_width_min_pixels=1,
                     ),
-
-                    # pdk.Layer(
-                    #     "PolygonLayer",
-                    #     data=json.dumps(feature),
-                    #     get_polygon="geometry.coordinates",
-                    #     filled=True,
-                    #     stroked=True,
-                    #     extruded=False,
-                    #     get_fill_color="[255, 255, 255, 150]",
-                    #     get_line_color="[255, 255, 255]",
-                    #     line_width_min_pixels=1,
-                    # ),
                     pdk.Layer(
                         "ScatterplotLayer",
-                        data=[{"position": user_coords}],
+                        data=[{"position": user_coords, "STREET_ADDRESS": "Your Location", "OPEN_HOURS":""}],
                         get_position="position",
                         get_color="[255, 0, 0, 255]",
                         get_radius=100,
+                        pickable=True,
+                        auto_highlight=True,
                     )
-                    
                 ],
-                tooltip = {
-                    "text": "Address: {STREET_ADDRESS}"
+                tooltip={
+                    "text": "Address: {STREET_ADDRESS}\n {OPEN_HOURS}"
                 }
             ))
+
