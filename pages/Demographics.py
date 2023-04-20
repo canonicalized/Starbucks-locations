@@ -60,7 +60,14 @@ with st.container():
             title="Total Population by Starbucks in Neighborhood",
             font=dict(size=12),
             height=400,
-            width=400
+            width=400,
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.2,
+                xanchor="center",
+                x=0.5
+            )
         )
 
         # Show the chart
@@ -120,13 +127,11 @@ fig.update_layout(
     title="Starbucks presence in neighborhoods by Household Income Level",
     xaxis_title="",
     yaxis_title="Percentage of Total Value",
-    legend_title="Starbucks in neighborhood",
     font=dict(size=12),
     height=600,
     width=800,
     xaxis=dict(showticklabels=False)
 )
-
 
 # Show the chart
 st.plotly_chart(fig, theme="streamlit", use_container_width=True, config={'displayModeBar': False})
