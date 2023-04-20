@@ -98,7 +98,6 @@ pot = pot.sort_values(by="Breakdown Order")
 pot["Population"] = pot["Population"].astype(str) 
 
 fig = go.Figure()
-
 fig.add_trace(
     go.Scatter(
         x=pot[pot["Starbucks in neighborhood"] == False]["Breakdown"],
@@ -109,7 +108,6 @@ fig.add_trace(
         hovertemplate='<b>Income level:</b> %{x}<br><b>Population % of total from neighborhoods without Starbucks:</b> %{y:.1f}%'
     )
 )
-
 fig.add_trace(
     go.Scatter(
         x=pot[pot["Starbucks in neighborhood"] == True]["Breakdown"],
@@ -121,7 +119,6 @@ fig.add_trace(
         hovertemplate='<b>Income level:</b> %{x}<br><b>Population % of total from neighborhoods with Starbucks:</b> %{y:.1f}%'
     )
 )
-
 # Update the layout of the chart
 fig.update_layout(
     title="Starbucks presence in neighborhoods by Household Income Level",
@@ -132,7 +129,6 @@ fig.update_layout(
     width=800,
     xaxis=dict(showticklabels=False)
 )
-
 # Show the chart
 st.plotly_chart(fig, theme="streamlit", use_container_width=True, config={'displayModeBar': False})
 
