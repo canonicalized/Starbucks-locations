@@ -132,7 +132,9 @@ if fas:
                 sb_coords = (row["LONGITUDE"], row["LATITUDE"])
                 sb_point = Point(sb_coords)
                 if any(sb_point.within(polygon) for polygon in isochrone):
-                    sb_locations = sb_locations.append({"LONGITUDE": row["LONGITUDE"], "LATITUDE": row["LATITUDE"], "STREET_ADDRESS":row["STREET_ADDRESS"], "OPEN_HOURS":row["OPEN_HOURS"]}, ignore_index=True)
+                    #sb_locations = sb_locations.append({"LONGITUDE": row["LONGITUDE"], "LATITUDE": row["LATITUDE"], "STREET_ADDRESS":row["STREET_ADDRESS"], "OPEN_HOURS":row["OPEN_HOURS"]}, ignore_index=True)
+                    sb_locations = pd.concat([sb_locations, pd.DataFrame({"LONGITUDE": row["LONGITUDE"], "LATITUDE": row["LATITUDE"], "STREET_ADDRESS":row["STREET_ADDRESS"], "OPEN_HOURS":row["OPEN_HOURS"]}, index=[0])], ignore_index=True)
+
 
             st.pydeck_chart(pdk.Deck(
                 map_style=None,
